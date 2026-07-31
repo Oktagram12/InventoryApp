@@ -44,5 +44,4 @@ dotnet ef database update
 ```
 
 **5. Projeyi Çalıştırın:**
-Projeyi başlatın ve tarayıcınız üzerinden Scalar arayüzüne giderek tüm API uçlarını (GET, POST, PUT, DELETE) test edin.
-
+Projeyi başlatın (örn: dotnet run). Ardından tarayıcınızdan https://localhost:xxxx/scalar/v1 (port numarası projeniz çalıştığında terminalde görünecektir) adresine giderek tüm API uçlarını (GET, POST, PUT, DELETE) test edebilirsiniz.
