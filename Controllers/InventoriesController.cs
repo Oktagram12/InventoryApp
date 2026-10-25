@@ -12,11 +12,26 @@ namespace InventoryApp.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IEmailService _emailService;
+        private readonly IConfiguration _configuration;
 
-        public InventoriesController(AppDbContext context, IEmailService emailService)
+        public InventoriesController(AppDbContext context, IEmailService emailService, IConfiguration configuration)
         {
             _context = context;
             _emailService = emailService;
+            _configuration = configuration;
+        }
+
+        // Uyarı alıcısı koda gömülmez; EmailSettings:AlertRecipient ayarından okunur.
+        private async Task SendStockAlertAsync(string subject, string body)
+        {
+            var recipient = _configuration["EmailSettings:AlertRecipient"];
+            if (string.IsNullOrWhiteSpace(recipient))
+            {
+                Console.WriteLine("EmailSettings:AlertRecipient ayarlanmamış, stok uyarı maili gönderilmedi.");
+                return;
+            }
+
+            await _emailService.SendEmailAsync(recipient, subject, body);
         }
 
         [HttpGet]
@@ -71,7 +86,7 @@ namespace InventoryApp.Controllers
                     </body>
                     </html>";
 
-                await _emailService.SendEmailAsync("atakanakyz6181@gmail.com", subject, bod);
+                await SendStockAlertAsync(subject, bod);
                 Console.WriteLine("Mail atıldı, stok kritik seviyede!");
             }
 
@@ -104,7 +119,7 @@ namespace InventoryApp.Controllers
                     </body>
                     </html>";
 
-                await _emailService.SendEmailAsync("atakanakyz6181@gmail.com", subject, message);
+                await SendStockAlertAsync(subject, message);
             }
 
             return NoContent();

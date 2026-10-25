@@ -28,8 +28,18 @@ git clone [https://github.com/Oktagram12/InventoryApp.git](https://github.com/Ok
 cd InventoryApp
 ```
 
-**2. E-Posta Ayarlarını Yapılandırın:**
-`appsettings.json` dosyasını açın ve `EmailSettings` bloğu altındaki `SenderPassword` kısmına test amaçlı kullanacağınız Gmail hesabınızın 16 haneli **Uygulama Şifresini** girin.
+**2. Gizli Ayarları Yapılandırın:**
+Şifreler ve e-posta bilgileri depoya yazılmaz. Veritabanı şifresi için `.env.example` dosyasını `.env` olarak kopyalayıp doldurun:
+```bash
+cp .env.example .env
+```
+E-posta ve yerel bağlantı ayarlarını [User Secrets](https://learn.microsoft.com/aspnet/core/security/app-secrets) ile girin (proje bunun için hazır):
+```bash
+dotnet user-secrets set "EmailSettings:SenderEmail" "gonderen@gmail.com"
+dotnet user-secrets set "EmailSettings:SenderPassword" "16_haneli_uygulama_sifresi"
+dotnet user-secrets set "EmailSettings:AlertRecipient" "uyari_alacak@adres.com"
+dotnet user-secrets set "ConnectionStrings:PostgresConnection" "Host=localhost;Port=5433;Database=RaforaInventoryDb;Username=postgres;Password=.env_deki_sifre"
+```
 
 **3. Veritabanını Ayağa Kaldırın:**
 Bilgisayarınızda Docker'ın çalıştığından emin olun ve terminalde şu komutu çalıştırın:

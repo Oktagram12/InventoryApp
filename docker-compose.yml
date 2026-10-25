@@ -3,7 +3,7 @@
     image: postgres:16
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?.env dosyasinda POSTGRES_PASSWORD tanimlayin}
       POSTGRES_DB: RaforaInventoryDb
     ports:
       - "5433:5432"
@@ -18,7 +18,7 @@
       - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__PostgresConnection=Host=inventory-db;Port=5432;Database=RaforaInventoryDb;Username=postgres;Password=123
+      - ConnectionStrings__PostgresConnection=Host=inventory-db;Port=5432;Database=RaforaInventoryDb;Username=postgres;Password=${POSTGRES_PASSWORD}
     depends_on:
       - inventory-db
 
